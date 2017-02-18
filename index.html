@@ -17,13 +17,19 @@
      
     </div>
     <script>
+      var i=0;
+      while(i<10){
       document.addEventListener('keydown', function(event) {
     if(event.keyCode == 37) {
         document.write("left");
+      i++;
     }
     else if(event.keyCode == 39) {
         document.write("right");
+      i++;
     }
+    document.write(i);}    
+      
 });
     </script>
            
