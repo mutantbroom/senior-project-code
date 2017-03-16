@@ -13,51 +13,105 @@
                 </p>
 
                 <p>
-        <button onclick="two();" id="button2" style="visibility:hidden">Button 2</button>    
+        <button onclick="attack();" id="button2" style="visibility:hidden">Attack</button>    
                 </p>
 
                 <p>
-        <button onclick="three();" id="button3" style="visibility:hidden">Button 3</button>  
+        <button onclick="three();" id="button3" style="visibility:hidden">Use Item</button>  
                 </p>  
-  
+  <div id="lastTurn"></div>
+  <div id="roundTurn"></div>
+  <div id="playerStats"></div>
+  <div id="enemyStats"></div>
   <div id="content"></div>
-
+               
   <script>
-var name;
+  var roundT;
+  var pStats;
+  var eStats;
+  var lastT;
+  var roun=1;
+  var Player=new player("placeholder", 1, 1, 1, "placeholder items");
+  var Enemy=new enemy("placeholder", 1, 1, 1, 1);
+//constructors for player and enemy
+function character(name,health,attack,defense){
+               this.name=name;
+               this.health=health;
+               this.attack=attack;
+    this.defense=defense;
+}
+function player(name,health,attack,defense,inventory){
+               character.call(this,name,health,attack,defense);
+    			this.inventory=inventory;
+}
+function enemy(name,health,attack,defense,round){
+               character.call(this,name,health,attack,defense);
+               this.round=round;
+}
+
 function mainGame () 
 {
                 name();
+                enemySelector();
+                textManager();
 }
+//puts pStats and eStats into text on screen
+function textManager ()
+{
+			document.getElementById("lastTurn").textContent=lastT;
+            document.getElementById("playerStats").textContent= pStats;
+    		document.getElementById("enemyStats").textContent= eStats;    
+
+}
+
 function randNum(){
- 	return Math.round(((Math.random()*10) +1));
+              return Math.round(((Math.random()*10) +1));
 }
 function name(){
-
-             	name = document.getElementById("name").value;
+                                                            var name = document.getElementById("name").value;
+                Player=new player(name, 100, 50, 50, "placeholder items");
+                
                  
                 if (name.length > 0)
-                {
-                                var message = "You are " + name + " the warrior. Your number is " + randNum();
-                                document.getElementById("content").textContent = message;
+                {                              
                                 document.getElementById("button1").style.visibility= 'hidden';
                                 document.getElementById("button2").style.visibility = 'visible';
                                 document.getElementById("button3").style.visibility = 'visible';
                 }
+                pStats="You are " + Player.name + ". Your health is " + Player.health + ".";
 }
-function two(){
-	
-	var message="You clicked button 2. Your number is " + randNum();
-     document.getElementById("content").textContent = message;
-
+function enemySelector(){
+               var rand = Math.round(Math.random()*2);
+    if(rand == 0){
+     Enemy=new enemy("orc", 200, 20, 10, roun);
+    }if(rand == 1){
+     Enemy=new enemy("troll", 120, 30, 20, roun);
+    }if (rand == 2){
+     Enemy = new enemy("skeleton", 80, 40, 10, roun);
+    }
+               eStats= Enemy.name + " appeared! It has " + Enemy.health + " health.";
+}
+//ignore these for now
+function attack(){
+               var damage=Math.round((Math.random()*(Player.attack+10))+(Player.attack-10));
+               Enemy.health-=damage;
+               lastT=Player.name + " attacked and did " + damage + " damage.";
+               enemyTurn();
 }
 function three(){
-	
-	var message="You clicked button 3. Your number is " + randNum();
-     document.getElementById("content").textContent = message;
+               
+               //var message="You clicked button 3. Your number is " + randNum();
+     //document.getElementById("content").textContent = message;
+
+}
+function enemyTurn(){
+	eDamage=Math.round((Math.random()*(Enemy.attack+10))+(Player.attack-10));
+    Player.health-=eDamage;
+    lastT += Enemy.name + " did " + eDamage + " damage.";
+    textManager();
 
 }
 </script>
 </body>
 </html>
-
 
