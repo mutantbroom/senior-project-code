@@ -31,8 +31,7 @@
   var eStats;
   var lastT;
   var roun=1;
-  var Player=new player("placeholder", 1, 1, 1, "placeholder items");
-  var Enemy=new enemy("placeholder", 1, 1, 1, 1);
+
 //constructors for player and enemy
 function character(name,health,attack,defense){
                this.name=name;
@@ -48,6 +47,8 @@ function enemy(name,health,attack,defense,round){
                character.call(this,name,health,attack,defense);
                this.round=round;
 }
+var Player=new player("placeholder", 1, 1, 1, "placeholder items");
+var Enemy=new enemy("placeholder", 1, 1, 1, 1);
 
 function mainGame () 
 {
@@ -93,7 +94,7 @@ function enemySelector(){
 }
 //ignore these for now
 function attack(){
-               var damage=Math.round((Math.random()*(Player.attack+10))+(Player.attack-10));
+               var damage=Math.round((Math.random()*((Player.attack+10)-(Player.attack-10)+1))+(Player.attack-10));
                Enemy.health-=damage;
                lastT=Player.name + " attacked and did " + damage + " damage.";
                enemyTurn();
@@ -105,7 +106,7 @@ function three(){
 
 }
 function enemyTurn(){
-	eDamage=Math.round((Math.random()*(Enemy.attack+10))+(Player.attack-10));
+	eDamage=Math.round((Math.random()*((Enemy.attack+10)-(Enemy.attack-10)+1))+(Player.attack-10));
     Player.health-=eDamage;
     lastT += Enemy.name + " did " + eDamage + " damage.";
     textManager();
