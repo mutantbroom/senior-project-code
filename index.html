@@ -2,8 +2,30 @@
 <html>
   <head>
     <meta charset="utf-8">
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    padding: 8px;
+    background-color: #008000;
+}
+</style>
   </head>
 <body>
+<ul>
+  <li><a href="#game">Game</a></li>
+  <li><a href="#otherPage">Other page</a></li>
+</ul>
   <h1>Game</h1>
   
                 <p>
@@ -31,6 +53,9 @@
   var eStats;
   var lastT;
   var roun=1;
+  var Player;
+  var Enemy;
+  var content;
 
 //constructors for player and enemy
 function character(name,health,attack,defense){
@@ -42,13 +67,42 @@ function character(name,health,attack,defense){
 function player(name,health,attack,defense,inventory){
                character.call(this,name,health,attack,defense);
     			this.inventory=inventory;
+		this.getName = function(){
+		return this.name;
+		};
+		this.getHealth = function(){
+		return this.health;
+		};
+		this.changeHealth = function(change){
+		this.health -= change;
+		};
+		this.getAttack = function(){
+		return this.attack;
+		};
+		this.getDefense = function(){
+		return this.defense;
+		};
 }
 function enemy(name,health,attack,defense,round){
                character.call(this,name,health,attack,defense);
                this.round=round;
+		this.getName = function(){
+		return this.name;
+		};
+		this.getHealth = function(){
+		return this.health;
+		};
+		this.changeHealth = function(change){
+		this.health -= change;
+		};
+		this.getAttack = function(){
+		return this.attack;
+		};
+		this.getDefense = function(){
+		return this.defense;
+		};
 }
-var Player=new player("placeholder", 1, 1, 1, "placeholder items");
-var Enemy=new enemy("placeholder", 1, 1, 1, 1);
+
 
 function mainGame () 
 {
@@ -61,7 +115,8 @@ function textManager ()
 {
 			document.getElementById("lastTurn").textContent=lastT;
             document.getElementById("playerStats").textContent= pStats;
-    		document.getElementById("enemyStats").textContent= eStats;    
+    		document.getElementById("enemyStats").textContent= eStats; 
+		document.getElementById("content").textContent= content;   
 
 }
 
@@ -70,7 +125,7 @@ function randNum(){
 }
 function name(){
                                                             var name = document.getElementById("name").value;
-                Player=new player(name, 100, 50, 50, "placeholder items");
+                Player=new player(name, 1000, 50, 50, "placeholder items");
                 
                  
                 if (name.length > 0)
@@ -79,24 +134,25 @@ function name(){
                                 document.getElementById("button2").style.visibility = 'visible';
                                 document.getElementById("button3").style.visibility = 'visible';
                 }
-                pStats="You are " + Player.name + ". Your health is " + Player.health + ".";
+                pStats="You are " + Player.getName() + ". Your health is " + Player.getHealth() + ".";
 }
 function enemySelector(){
                var rand = Math.round(Math.random()*2);
     if(rand == 0){
-     Enemy=new enemy("orc", 200, 20, 10, roun);
+     Enemy=new enemy("orc", 1000, 15, 10, roun);
     }if(rand == 1){
-     Enemy=new enemy("troll", 120, 30, 20, roun);
+     Enemy=new enemy("troll", 1000, 15, 10, roun);
     }if (rand == 2){
-     Enemy = new enemy("skeleton", 80, 40, 10, roun);
+     Enemy = new enemy("skeleton", 1000, 15, 10, roun);
     }
-               eStats= Enemy.name + " appeared! It has " + Enemy.health + " health.";
+               eStats= Enemy.getName() + " appeared! It has " + Enemy.getHealth() + " health.";
 }
-//ignore these for now
+
 function attack(){
-               var damage=Math.round((Math.random()*((Player.attack+10)-(Player.attack-10)+1))+(Player.attack-10));
-               Enemy.health-=damage;
-               lastT=Player.name + " attacked and did " + damage + " damage.";
+               var damage=Math.round((Math.random()*((Player.getAttack()+10)-(Player.getAttack()-10)+1))+(Player.getAttack()-10));
+               Enemy.changeHealth(damage);
+               lastT=Player.getName() + " attacked and did " + damage + " damage.";
+		eStats = Enemy.getName() + " has " + Enemy.getHealth() + " health left.";
                enemyTurn();
 }
 function three(){
@@ -106,13 +162,50 @@ function three(){
 
 }
 function enemyTurn(){
-	eDamage=Math.round((Math.random()*((Enemy.attack+10)-(Enemy.attack-10)+1))+(Player.attack-10));
-    Player.health-=eDamage;
-    lastT += Enemy.name + " did " + eDamage + " damage.";
+	eDamage=Math.round((Math.random()*((Enemy.getAttack()+10)-(Enemy.getAttack()-10)+1))+(Enemy.getAttack()-10));
+    Player.changeHealth(eDamage);
+    lastT += Enemy.getName() + " attacked and did " + eDamage + " damage.";
+	
+	pStats = Player.getName() + " has " + Player.getHealth() + " health left.";
+	winCheck();
     textManager();
 
+
 }
+function winCheck(){
+	if(Enemy.getHealth() <= 0 && Player.getHealth() > 0){
+		
+		lastT = null;
+		eStats = null;
+		pStats = null;
+		document.getElementById("button2").style.visibility = 'hidden';
+                document.getElementById("button3").style.visibility = 'hidden';
+		content="you win";
+	}
+	 if(Player.getHealth() <= 0 && Enemy.getHealth() > 0){
+		lastT = null;
+		eStats = null;
+		pStats = null;
+		document.getElementById("button2").style.visibility = 'hidden';
+                document.getElementById("button3").style.visibility = 'hidden';
+		content="you lose";
+	}
+	 if(Player.getHealth() <= 0 && Enemy.getHealth() <= 0){
+		lastT = null;
+		eStats = null;
+		pStats = null;
+		document.getElementById("button2").style.visibility = 'hidden';
+                document.getElementById("button3").style.visibility = 'hidden';
+		content = "you tied";
+	}
+	
+	textManager();	
+
+
+}	
+
+
+
 </script>
 </body>
 </html>
-
