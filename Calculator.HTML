@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    padding: 8px;
+    background-color: #008000;
+}
+* {
+	font-size: 30px;
+}
+#yellow {
+	background-color: yellow;
+}
+</style>
+  </head>
+<body>
+	<h1>Calculator</h1>
+		<p>
+		<div>
+		<button onclick="takeNum(1);" class = "num"> 1 </button>
+		<button onclick="takeNum(2);" class = "num"> 2 </button>
+		<button onclick="takeNum(3);" class = "num"> 3 </button>
+		</div>
+		<div>
+		<button onclick="takeNum(4);" class = "num"> 4 </button>
+		<button onclick="takeNum(5);" class = "num"> 5 </button>
+		<button onclick="takeNum(6);" class = "num"> 6 </button>
+		</div>
+		<div>
+		<button onclick="takeNum(7);" class = "num"> 7 </button>
+		<button onclick="takeNum(8);" class = "num"> 8 </button>
+		<button onclick="takeNum(9);" class = "num"> 9 </button>
+		</div>
+		<button onclick="takeNum(0);" class = "num"> 0 </button>
+		
+		<button onclick="equals();" id="equals" style="visibility:hidden"> = </button>
+		
+		</p>
+	<div id="previousNum"></div>
+	<div id="op"></div>
+	<div id="currentNum"></div>
+	<div id="question"></div>
+	<button onclick="add();" class="operator">+</button>
+	<button onclick="subtract();" class="operator">-</button>
+	<button onclick="multiply();" class="operator">*</button>
+	<button onclick="divide();" class="operator">/</button>
+	<span id="result" style = "background-color: yellow;"></span>
+	<div><button onclick="reset();" id="reset" style="visibility:hidden"> Reset (only works in IE) </button></div>
+<script>
+	var result;
+	var inputs = 0;
+	var input1 = 0;
+	var input2 = 0;
+	var question;
+	var previousNumber;
+	var currentNumber;
+	var operation;
+	function takeNum(num){
+		if(inputs==0){
+		input1 = (input1 * 10) + num;
+		currentNumber=input1;
+		}
+		if(inputs==1){
+		input2 = (input2 * 10) + num 
+		previousNumber=input1;
+		currentNumber=input2;
+		}
+		textManager();
+	}
+	function equals(){
+		if(operation==="+"){
+			result = input1 + input2;
+			textManager();
+		} else if(operation==="-"){
+			result = input1 - input2;
+			textManager();
+		} else if(operation==="*"){
+			result = input1 * input2;
+			textManager();
+		} else if(operation==="/"){
+			result = input1 / input2;
+			textManager();
+		}
+		document.getElementById("reset").style.visibility = "visible";
+
+	}
+	//function operation(){
+	//	var numbers = document.getElementsByClassName("num");
+	//	for (var i=0; i< numbers.length; i++){
+	//		numbers[i].style.visibility="hidden";
+	//	}
+	//	var operations = document.getElementsByClassName("operator");
+	//	for(var x=0; x< operations.length; x++){
+	//		operations[x].style.visibility="visible";
+	//	}
+	//
+	//}
+	function putEquals(){
+		var operations = document.getElementsByClassName("operator");
+		for(var x=0; x< operations.length; x++){
+			operations[x].style.visibility="hidden";
+		}
+		document.getElementById("equals").style.visibility = "visible";
+
+
+	}
+	
+	function add(){
+		inputs++;
+		operation = "+";
+		putEquals();
+	}
+	function subtract(){
+		inputs++;
+		operation = "-";
+		putEquals();
+	}
+	function multiply(){
+		inputs++;
+		operation = "*";
+		putEquals();
+	}
+	function divide(){
+		inputs++;
+		operation = "/";
+		putEquals();
+	}
+	function reset(){
+		var f = document.getElementById('page');
+		f.src = f.src;
+
+
+	}
+	function textManager(){
+		document.getElementById("question").textContent=question;
+		document.getElementById("result").textContent=result;
+		document.getElementById("previousNum").textContent=previousNumber;
+		document.getElementById("currentNum").textContent=currentNumber;
+		document.getElementById("op").textContent=operation;
+	}
+	
+</script>
+</body>
+</html>	
