@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    padding: 8px;
+    background-color: #008000;
+}
+#left {
+	text-align: left;
+}
+* {
+		font-size: 20px;
+
+}
+</style>
+  </head>
+<body>
+
+  <h1>Game</h1>
+ <span id = "left">
+                                What will your character name be? 
+                                <input id="name" type="text">
+                                <button onclick="mainGame();" id="button1">Enter</button>
+                </span>
+  
+ 
+  
+               
+
+        <p>       
+        <button onclick="attack();" id="button2" style="visibility:hidden">Attack</button>    
+        </p>        
+
+        <p>        
+        <button onclick="itemManager(1);" id="item1" style="visibility:hidden">Use Item 1</button> 
+	<button onclick="itemManager(2);" id="item2" style="visibility:hidden">Use Item 2</button>
+	<button onclick="itemManager(3);" id="item3" style="visibility:hidden">Use Item 3</button>
+	<button onclick="gameStart();" id="betweenGame" style="visibility:hidden">Ready for fight!</button> 
+        </p>         
+ 
+  <div id="lastTurn"></div>
+  <div id="roundTurn"></div>
+  <div id="item"></div>
+  <div id="playerStats"></div>
+  <div id="enemyStats"></div>
+  <div id="content"></div>
+  
+  
+
+ 
+  <script src="gameScript.js"></script>
+</body>
+</html>
